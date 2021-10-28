@@ -10,8 +10,8 @@ documentclass: book
 description: |
   Learn to create Machine Learning Algorithms in Python and R from two Data 
   Science experts. Code templates included.
-link-citations: yes
-# github-repo: "murphymv/Machine Learning A-Z"
+# link-citations: yes
+github-repo: "murphymv/Machine-Learning-A-Z"
 ---
 
 ```{r setup, echo = FALSE, include = FALSE}
