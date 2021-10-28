@@ -1,0 +1,1587 @@
+# Classification
+
+## Logistic Regression
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Social_Network_Ads.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Social_Network_Ads.csv')
+# dataset = dataset[3:5]
+```
+
+### Encoding the target feature as factor
+
+R
+
+```{r}
+dataset$Purchased = factor(dataset$Purchased, levels = c(0, 1))
+```
+
+### Splitting the dataset into the Training set and Test set
+
+Python
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+print(X_train)
+print(y_train)
+print(X_test)
+print(y_test)
+```
+
+R
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Purchased, SplitRatio = 0.75)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Feature Scaling
+
+Python
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+print(X_train)
+print(X_test)
+```
+
+R
+
+```{r}
+training_set[-3] = scale(training_set[-3])
+test_set[-3] = scale(test_set[-3])
+```
+
+### Training the Logistic Regression model on the Training set
+
+Python
+
+```{python}
+from sklearn.linear_model import LogisticRegression
+classifier = LogisticRegression(random_state = 0)
+classifier.fit(X_train, y_train)
+```
+
+R
+
+```{r}
+classifier = glm(formula = Purchased ~ .,
+                 family = binomial,
+                 data = training_set)
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+print(classifier.predict(sc.transform([[30,87000]])))
+```
+
+### Predicting the Test set results
+
+Python
+
+```{python}
+y_pred = classifier.predict(X_test)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+```
+
+R
+
+```{r}
+prob_pred = predict(classifier, type = 'response', newdata = test_set[-3])
+y_pred = ifelse(prob_pred > 0.5, 1, 0)
+```
+
+### Making the Confusion Matrix
+
+Python
+
+```{python}
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+accuracy_score(y_test, y_pred)
+```
+
+R
+
+```{r}
+cm = table(test_set[, 3], y_pred > 0.5)
+```
+
+### Visualising the Training set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_train), y_train
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Logistic Regression (Training set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = training_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+prob_set = predict(classifier, type = 'response', newdata = grid_set)
+y_grid = ifelse(prob_set > 0.5, 1, 0)
+plot(set[, -3],
+     main = 'Logistic Regression (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+### Visualising the Test set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_test), y_test
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Logistic Regression (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+prob_set = predict(classifier, type = 'response', newdata = grid_set)
+y_grid = ifelse(prob_set > 0.5, 1, 0)
+plot(set[, -3],
+     main = 'Logistic Regression (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+## K-Nearest Neighbours (K-NN)
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Social_Network_Ads.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Social_Network_Ads.csv')
+# dataset = dataset[3:5]
+```
+
+### Encoding the target feature as factor
+
+R
+
+```{r}
+dataset$Purchased = factor(dataset$Purchased, levels = c(0, 1))
+```
+
+### Splitting the dataset into the Training set and Test set
+
+Python
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+print(X_train)
+print(y_train)
+print(X_test)
+print(y_test)
+```
+
+R
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Purchased, SplitRatio = 0.75)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Feature Scaling
+
+Python
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+print(X_train)
+print(X_test)
+```
+
+R
+
+```{r}
+training_set[-3] = scale(training_set[-3])
+test_set[-3] = scale(test_set[-3])
+```
+
+### Training the K-NN model on the Training set
+
+Python
+
+```{python}
+from sklearn.neighbors import KNeighborsClassifier
+classifier = KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2)
+classifier.fit(X_train, y_train)
+```
+
+R (Fitting K-NN to the Training set and Predicting the Test set results)
+
+```{r}
+library(class)
+y_pred = knn(train = training_set[, -3],
+             test = test_set[, -3],
+             cl = training_set[, 3],
+             k = 5,
+             prob = TRUE)
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+print(classifier.predict(sc.transform([[30,87000]])))
+```
+
+### Predicting the Test set results
+
+Python
+
+```{python}
+y_pred = classifier.predict(X_test)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+```
+
+### Making the Confusion Matrix
+
+Python
+
+```{python}
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+accuracy_score(y_test, y_pred)
+```
+
+R
+
+```{r}
+cm = table(test_set[, 3], y_pred)
+```
+
+### Visualising the Training set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_train), y_train
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 1),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 1))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('K-NN (Training set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = training_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = knn(train = training_set[, -3], test = grid_set, cl = training_set[, 3], k = 5)
+plot(set[, -3],
+     main = 'K-NN (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+### Visualising the Test set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_test), y_test
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 1),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 1))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('K-NN (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = knn(train = training_set[, -3], test = grid_set, cl = training_set[, 3], k = 5)
+plot(set[, -3],
+     main = 'K-NN (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+## Support Vector Machine (SVM)
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Social_Network_Ads.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Social_Network_Ads.csv')
+# dataset = dataset[3:5]
+```
+
+### Encoding the target feature as factor
+
+R
+
+```{r}
+dataset$Purchased = factor(dataset$Purchased, levels = c(0, 1))
+```
+
+### Splitting the dataset into the Training set and Test set
+
+Python
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+print(X_train)
+print(y_train)
+print(X_test)
+print(y_test)
+```
+
+R
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Purchased, SplitRatio = 0.75)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Feature Scaling
+
+Python
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+print(X_train)
+print(X_test)
+```
+
+R
+
+```{r}
+training_set[-3] = scale(training_set[-3])
+test_set[-3] = scale(test_set[-3])
+```
+
+### Training the SVM model on the Training set
+
+Python
+
+```{python}
+from sklearn.svm import SVC
+classifier = SVC(kernel = 'linear', random_state = 0)
+classifier.fit(X_train, y_train)
+```
+
+R
+
+```{r}
+# install.packages('e1071')
+library(e1071)
+classifier = svm(formula = Purchased ~ .,
+                 data = training_set,
+                 type = 'C-classification',
+                 kernel = 'linear')
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+print(classifier.predict(sc.transform([[30,87000]])))
+```
+
+### Predicting the Test set results
+
+Python
+
+```{python}
+y_pred = classifier.predict(X_test)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+```
+
+R
+
+```{r}
+y_pred = predict(classifier, newdata = test_set[-3])
+```
+
+### Making the Confusion Matrix
+
+Python
+
+```{python}
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+accuracy_score(y_test, y_pred)
+```
+
+R
+
+```{r}
+cm = table(test_set[, 3], y_pred)
+```
+
+### Visualising the Training set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_train), y_train
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('SVM (Training set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = training_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, newdata = grid_set)
+plot(set[, -3],
+     main = 'SVM (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+### Visualising the Test set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_test), y_test
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('SVM (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, newdata = grid_set)
+plot(set[, -3], main = 'SVM (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+## Kernel SVM
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Social_Network_Ads.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Social_Network_Ads.csv')
+# dataset = dataset[3:5]
+```
+
+### Encoding the target feature as factor
+
+R
+
+```{r}
+dataset$Purchased = factor(dataset$Purchased, levels = c(0, 1))
+```
+
+### Splitting the dataset into the Training set and Test set
+
+Python
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+print(X_train)
+print(y_train)
+print(X_test)
+print(y_test)
+```
+
+R
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Purchased, SplitRatio = 0.75)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Feature Scaling
+
+Python
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+print(X_train)
+print(X_test)
+```
+
+R
+
+```{r}
+training_set[-3] = scale(training_set[-3])
+test_set[-3] = scale(test_set[-3])
+```
+
+### Training the Kernel SVM model on the Training set
+
+Python
+
+```{python}
+from sklearn.svm import SVC
+classifier = SVC(kernel = 'rbf', random_state = 0)
+classifier.fit(X_train, y_train)
+```
+
+R
+
+```{r}
+# install.packages('e1071')
+library(e1071)
+classifier = svm(formula = Purchased ~ .,
+                 data = training_set,
+                 type = 'C-classification',
+                 kernel = 'radial')
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+print(classifier.predict(sc.transform([[30,87000]])))
+```
+
+### Predicting the Test set results
+
+Python
+
+```{python}
+y_pred = classifier.predict(X_test)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+```
+
+R
+
+```{r}
+y_pred = predict(classifier, newdata = test_set[-3])
+```
+
+### Making the Confusion Matrix
+
+Python
+
+```{python}
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+accuracy_score(y_test, y_pred)
+```
+
+R
+
+```{r}
+cm = table(test_set[, 3], y_pred)
+```
+
+### Visualising the Training set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_train), y_train
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Kernel SVM (Training set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = training_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, newdata = grid_set)
+plot(set[, -3],
+     main = 'Kernel SVM (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+### Visualising the Test set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_test), y_test
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Kernel SVM (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, newdata = grid_set)
+plot(set[, -3], main = 'Kernel SVM (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+## Naive Bayes
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Social_Network_Ads.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Social_Network_Ads.csv')
+# dataset = dataset[3:5]
+```
+
+### Encoding the target feature as factor
+
+R
+
+```{r}
+dataset$Purchased = factor(dataset$Purchased, levels = c(0, 1))
+```
+
+### Splitting the dataset into the Training set and Test set
+
+Python
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+print(X_train)
+print(y_train)
+print(X_test)
+print(y_test)
+```
+
+R
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Purchased, SplitRatio = 0.75)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Feature Scaling
+
+Python
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+print(X_train)
+print(X_test)
+```
+
+R
+
+```{r}
+training_set[-3] = scale(training_set[-3])
+test_set[-3] = scale(test_set[-3])
+```
+
+### Training the Naive Bayes model on the Training set
+
+Python
+
+```{python}
+from sklearn.naive_bayes import GaussianNB
+classifier = GaussianNB()
+classifier.fit(X_train, y_train)
+```
+
+R
+
+```{r}
+# install.packages('e1071')
+library(e1071)
+classifier = naiveBayes(x = training_set[-3],
+                        y = training_set$Purchased)
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+print(classifier.predict(sc.transform([[30,87000]])))
+```
+
+### Predicting the Test set results
+
+Python
+
+```{python}
+y_pred = classifier.predict(X_test)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+```
+
+R
+
+```{r}
+y_pred = predict(classifier, newdata = test_set[-3])
+```
+
+### Making the Confusion Matrix
+
+Python
+
+```{python}
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+accuracy_score(y_test, y_pred)
+```
+
+R
+
+```{r}
+cm = table(test_set[, 3], y_pred)
+```
+
+### Visualising the Training set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_train), y_train
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Naive Bayes (Training set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = training_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, newdata = grid_set)
+plot(set[, -3],
+     main = 'Naive Bayes (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+### Visualising the Test set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_test), y_test
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Naive Bayes (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, newdata = grid_set)
+plot(set[, -3], main = 'Naive Bayes (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+## Decision Tree Classification
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Social_Network_Ads.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Social_Network_Ads.csv')
+# dataset = dataset[3:5]
+```
+
+### Encoding the target feature as factor
+
+R
+
+```{r}
+dataset$Purchased = factor(dataset$Purchased, levels = c(0, 1))
+```
+
+### Splitting the dataset into the Training set and Test set
+
+Python
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+print(X_train)
+print(y_train)
+print(X_test)
+print(y_test)
+```
+
+R
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Purchased, SplitRatio = 0.75)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Feature Scaling
+
+Python
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+print(X_train)
+print(X_test)
+```
+
+R
+
+```{r}
+training_set[-3] = scale(training_set[-3])
+test_set[-3] = scale(test_set[-3])
+```
+
+### Training the Decision Tree Classification model on the Training set
+
+Python
+
+```{python}
+from sklearn.tree import DecisionTreeClassifier
+classifier = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)
+classifier.fit(X_train, y_train)
+```
+
+R
+
+```{r}
+# install.packages('rpart')
+library(rpart)
+classifier = rpart(formula = Purchased ~ .,
+                   data = training_set)
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+print(classifier.predict(sc.transform([[30,87000]])))
+```
+
+### Predicting the Test set results
+
+Python
+
+```{python}
+y_pred = classifier.predict(X_test)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+```
+
+R
+
+```{r}
+y_pred = predict(classifier, newdata = test_set[-3], type = 'class')
+```
+
+### Making the Confusion Matrix
+
+Python
+
+```{python}
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+accuracy_score(y_test, y_pred)
+```
+
+R
+
+```{r}
+cm = table(test_set[, 3], y_pred)
+```
+
+### Visualising the Training set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_train), y_train
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Decision Tree Classification (Training set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = training_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, newdata = grid_set, type = 'class')
+plot(set[, -3],
+     main = 'Decision Tree Classification (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+### Visualising the Test set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_test), y_test
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Decision Tree Classification (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, newdata = grid_set, type = 'class')
+plot(set[, -3], main = 'Decision Tree Classification (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+### Plotting the tree
+
+R
+
+```{r}
+plot(classifier)
+text(classifier)
+```
+
+## Random Forest Classification
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Social_Network_Ads.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Social_Network_Ads.csv')
+# dataset = dataset[3:5]
+```
+
+### Encoding the target feature as factor
+
+R
+
+```{r}
+dataset$Purchased = factor(dataset$Purchased, levels = c(0, 1))
+```
+
+### Splitting the dataset into the Training set and Test set
+
+Python
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 0)
+print(X_train)
+print(y_train)
+print(X_test)
+print(y_test)
+```
+
+R
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Purchased, SplitRatio = 0.75)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Feature Scaling
+
+Python
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+print(X_train)
+print(X_test)
+```
+
+R
+
+```{r}
+training_set[-3] = scale(training_set[-3])
+test_set[-3] = scale(test_set[-3])
+```
+
+### Training the Random Forest Classification model on the Training set
+
+Python
+
+```{python}
+from sklearn.ensemble import RandomForestClassifier
+classifier = RandomForestClassifier(n_estimators = 10, criterion = 'entropy', random_state = 0)
+classifier.fit(X_train, y_train)
+```
+
+R
+
+```{r}
+# install.packages('randomForest')
+library(randomForest)
+set.seed(123)
+classifier = randomForest(x = training_set[-3],
+                          y = training_set$Purchased,
+                          ntree = 500)
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+print(classifier.predict(sc.transform([[30,87000]])))
+```
+
+### Predicting the Test set results
+
+Python
+
+```{python}
+y_pred = classifier.predict(X_test)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+```
+
+R
+
+```{r}
+y_pred = predict(classifier, newdata = test_set[-3])
+```
+
+### Making the Confusion Matrix
+
+Python
+
+```{python}
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+accuracy_score(y_test, y_pred)
+```
+
+R
+
+```{r}
+cm = table(test_set[, 3], y_pred)
+```
+
+### Visualising the Training set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_train), y_train
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Random Forest Classification (Training set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = training_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, grid_set)
+plot(set[, -3],
+     main = 'Random Forest Classification (Training set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+### Visualising the Test set results
+
+Python
+
+```{python, cache = TRUE}
+from matplotlib.colors import ListedColormap
+X_set, y_set = sc.inverse_transform(X_test), y_test
+X1, X2 = np.meshgrid(np.arange(start = X_set[:, 0].min() - 10, stop = X_set[:, 0].max() + 10, step = 0.25),
+                     np.arange(start = X_set[:, 1].min() - 1000, stop = X_set[:, 1].max() + 1000, step = 0.25))
+plt.contourf(X1, X2, classifier.predict(sc.transform(np.array([X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
+             alpha = 0.75, cmap = ListedColormap(('red', 'green')))
+plt.xlim(X1.min(), X1.max())
+plt.ylim(X2.min(), X2.max())
+for i, j in enumerate(np.unique(y_set)):
+    plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1], c = ListedColormap(('red', 'green'))(i), label = j)
+plt.title('Random Forest Classification (Test set)')
+plt.xlabel('Age')
+plt.ylabel('Estimated Salary')
+plt.legend()
+plt.show()
+```
+
+R
+
+```{r, cache = TRUE}
+library(ElemStatLearn)
+set = test_set
+X1 = seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by = 0.01)
+X2 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('Age', 'EstimatedSalary')
+y_grid = predict(classifier, grid_set)
+plot(set[, -3], main = 'Random Forest Classification (Test set)',
+     xlab = 'Age', ylab = 'Estimated Salary',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+```
+
+### Choosing the number of trees
+
+R
+
+```{r}
+plot(classifier)
+```
+
+## Classification Model Selection in Python
+
+### Heading 3
+
+Python
+
+```{python}
+
+```
+
+R
+
+```{r}
+
+```

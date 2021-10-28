@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5.1 Equations | Machine Learning A-Z</title>
+  <meta name="description" content="<p>Learn to create Machine Learning Algorithms in Python and R from two Data
+Science experts. Code templates included.</p>" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5.1 Equations | Machine Learning A-Z" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="<p>Learn to create Machine Learning Algorithms in Python and R from two Data
+Science experts. Code templates included.</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5.1 Equations | Machine Learning A-Z" />
+  
+  <meta name="twitter:description" content="<p>Learn to create Machine Learning Algorithms in Python and R from two Data
+Science experts. Code templates included.</p>" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="blocks.html"/>
+<link rel="next" href="theorems-and-proofs.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Machine Learning A-Z</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Course Outline</a>
+<ul>
+<li class="chapter" data-level="" data-path="what-youll-learn.html"><a href="what-youll-learn.html"><i class="fa fa-check"></i>What you’ll learn:</a></li>
+<li class="chapter" data-level="" data-path="are-there-any-course-requirements-or-prerequisites.html"><a href="are-there-any-course-requirements-or-prerequisites.html"><i class="fa fa-check"></i>Are there any course requirements or prerequisites?</a></li>
+<li class="chapter" data-level="" data-path="who-this-course-is-for.html"><a href="who-this-course-is-for.html"><i class="fa fa-check"></i>Who this course is for:</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="data-preprocessing.html"><a href="data-preprocessing.html"><i class="fa fa-check"></i><b>1</b> Data Preprocessing</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="importing-the-libraries.html"><a href="importing-the-libraries.html"><i class="fa fa-check"></i><b>1.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="1.2" data-path="importing-the-dataset.html"><a href="importing-the-dataset.html"><i class="fa fa-check"></i><b>1.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="1.3" data-path="taking-care-of-missing-data.html"><a href="taking-care-of-missing-data.html"><i class="fa fa-check"></i><b>1.3</b> Taking care of missing data</a></li>
+<li class="chapter" data-level="1.4" data-path="encoding-categorical-data.html"><a href="encoding-categorical-data.html"><i class="fa fa-check"></i><b>1.4</b> Encoding categorical data</a></li>
+<li class="chapter" data-level="1.5" data-path="splitting-the-dataset-into-the-training-set-and-test-set.html"><a href="splitting-the-dataset-into-the-training-set-and-test-set.html"><i class="fa fa-check"></i><b>1.5</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="1.6" data-path="feature-scaling.html"><a href="feature-scaling.html"><i class="fa fa-check"></i><b>1.6</b> Feature Scaling</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>2</b> Regression</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>2.1</b> Simple Linear Regression</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#importing-the-libraries-1"><i class="fa fa-check"></i><b>2.1.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="2.1.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#importing-the-dataset-1"><i class="fa fa-check"></i><b>2.1.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="2.1.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#splitting-the-dataset-into-the-training-set-and-test-set-1"><i class="fa fa-check"></i><b>2.1.3</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="2.1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#training-the-simple-linear-regression-model-on-the-training-set"><i class="fa fa-check"></i><b>2.1.4</b> Training the Simple Linear Regression model on the Training set</a></li>
+<li class="chapter" data-level="2.1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#predicting-the-test-set-results"><i class="fa fa-check"></i><b>2.1.5</b> Predicting the Test set results</a></li>
+<li class="chapter" data-level="2.1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#visualising-the-training-set-results"><i class="fa fa-check"></i><b>2.1.6</b> Visualising the Training set results</a></li>
+<li class="chapter" data-level="2.1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#visualising-the-test-set-results"><i class="fa fa-check"></i><b>2.1.7</b> Visualising the Test set results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html"><i class="fa fa-check"></i><b>2.2</b> Multiple Linear Regression</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html#importing-the-libraries-2"><i class="fa fa-check"></i><b>2.2.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="2.2.2" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html#importing-the-dataset-2"><i class="fa fa-check"></i><b>2.2.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="2.2.3" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html#encoding-categorical-data-1"><i class="fa fa-check"></i><b>2.2.3</b> Encoding categorical data</a></li>
+<li class="chapter" data-level="2.2.4" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html#splitting-the-dataset-into-the-training-set-and-test-set-2"><i class="fa fa-check"></i><b>2.2.4</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="2.2.5" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html#training-the-multiple-linear-regression-model-on-the-training-set"><i class="fa fa-check"></i><b>2.2.5</b> Training the Multiple Linear Regression model on the Training set</a></li>
+<li class="chapter" data-level="2.2.6" data-path="multiple-linear-regression.html"><a href="multiple-linear-regression.html#predicting-the-test-set-results-1"><i class="fa fa-check"></i><b>2.2.6</b> Predicting the Test set results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="polynomial-regression.html"><a href="polynomial-regression.html"><i class="fa fa-check"></i><b>2.3</b> Polynomial Regression</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="polynomial-regression.html"><a href="polynomial-regression.html#importing-the-libraries-3"><i class="fa fa-check"></i><b>2.3.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="2.3.2" data-path="polynomial-regression.html"><a href="polynomial-regression.html#importing-the-dataset-3"><i class="fa fa-check"></i><b>2.3.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="2.3.3" data-path="polynomial-regression.html"><a href="polynomial-regression.html#training-the-linear-regression-model-on-the-whole-dataset"><i class="fa fa-check"></i><b>2.3.3</b> Training the Linear Regression model on the whole dataset</a></li>
+<li class="chapter" data-level="2.3.4" data-path="polynomial-regression.html"><a href="polynomial-regression.html#training-the-polynomial-regression-model-on-the-whole-dataset"><i class="fa fa-check"></i><b>2.3.4</b> Training the Polynomial Regression model on the whole dataset</a></li>
+<li class="chapter" data-level="2.3.5" data-path="polynomial-regression.html"><a href="polynomial-regression.html#visualising-the-linear-regression-results"><i class="fa fa-check"></i><b>2.3.5</b> Visualising the Linear Regression results</a></li>
+<li class="chapter" data-level="2.3.6" data-path="polynomial-regression.html"><a href="polynomial-regression.html#visualising-the-polynomial-regression-results"><i class="fa fa-check"></i><b>2.3.6</b> Visualising the Polynomial Regression results</a></li>
+<li class="chapter" data-level="2.3.7" data-path="polynomial-regression.html"><a href="polynomial-regression.html#visualising-the-polynomial-regression-results-for-higher-resolution-and-smoother-curve"><i class="fa fa-check"></i><b>2.3.7</b> Visualising the Polynomial Regression results (for higher resolution and smoother curve)</a></li>
+<li class="chapter" data-level="2.3.8" data-path="polynomial-regression.html"><a href="polynomial-regression.html#predicting-a-new-result-with-linear-regression"><i class="fa fa-check"></i><b>2.3.8</b> Predicting a new result with Linear Regression</a></li>
+<li class="chapter" data-level="2.3.9" data-path="polynomial-regression.html"><a href="polynomial-regression.html#predicting-a-new-result-with-polynomial-regression"><i class="fa fa-check"></i><b>2.3.9</b> Predicting a new result with Polynomial Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="support-vector-regression.html"><a href="support-vector-regression.html"><i class="fa fa-check"></i><b>2.4</b> Support Vector Regression</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="support-vector-regression.html"><a href="support-vector-regression.html#importing-the-libraries-4"><i class="fa fa-check"></i><b>2.4.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="2.4.2" data-path="support-vector-regression.html"><a href="support-vector-regression.html#importing-the-dataset-4"><i class="fa fa-check"></i><b>2.4.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="2.4.3" data-path="support-vector-regression.html"><a href="support-vector-regression.html#feature-scaling-1"><i class="fa fa-check"></i><b>2.4.3</b> Feature Scaling</a></li>
+<li class="chapter" data-level="2.4.4" data-path="support-vector-regression.html"><a href="support-vector-regression.html#training-the-svr-model-on-the-whole-dataset"><i class="fa fa-check"></i><b>2.4.4</b> Training the SVR model on the whole dataset</a></li>
+<li class="chapter" data-level="2.4.5" data-path="support-vector-regression.html"><a href="support-vector-regression.html#predicting-a-new-result"><i class="fa fa-check"></i><b>2.4.5</b> Predicting a new result</a></li>
+<li class="chapter" data-level="2.4.6" data-path="support-vector-regression.html"><a href="support-vector-regression.html#visualising-the-svr-results"><i class="fa fa-check"></i><b>2.4.6</b> Visualising the SVR results</a></li>
+<li class="chapter" data-level="2.4.7" data-path="support-vector-regression.html"><a href="support-vector-regression.html#visualising-the-svr-results-for-higher-resolution-and-smoother-curve"><i class="fa fa-check"></i><b>2.4.7</b> Visualising the SVR results (for higher resolution and smoother curve)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="decision-tree-regression.html"><a href="decision-tree-regression.html"><i class="fa fa-check"></i><b>2.5</b> Decision Tree Regression</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="decision-tree-regression.html"><a href="decision-tree-regression.html#importing-the-libraries-5"><i class="fa fa-check"></i><b>2.5.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="2.5.2" data-path="decision-tree-regression.html"><a href="decision-tree-regression.html#importing-the-dataset-5"><i class="fa fa-check"></i><b>2.5.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="2.5.3" data-path="decision-tree-regression.html"><a href="decision-tree-regression.html#training-the-decision-tree-regression-model-on-the-whole-dataset"><i class="fa fa-check"></i><b>2.5.3</b> Training the Decision Tree Regression model on the whole dataset</a></li>
+<li class="chapter" data-level="2.5.4" data-path="decision-tree-regression.html"><a href="decision-tree-regression.html#predicting-a-new-result-1"><i class="fa fa-check"></i><b>2.5.4</b> Predicting a new result</a></li>
+<li class="chapter" data-level="2.5.5" data-path="decision-tree-regression.html"><a href="decision-tree-regression.html#visualising-the-decision-tree-regression-results-higher-resolution"><i class="fa fa-check"></i><b>2.5.5</b> Visualising the Decision Tree Regression results (higher resolution)</a></li>
+<li class="chapter" data-level="2.5.6" data-path="decision-tree-regression.html"><a href="decision-tree-regression.html#plotting-the-tree"><i class="fa fa-check"></i><b>2.5.6</b> Plotting the tree</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="random-forest-regression.html"><a href="random-forest-regression.html"><i class="fa fa-check"></i><b>2.6</b> Random Forest Regression</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="random-forest-regression.html"><a href="random-forest-regression.html#importing-the-libraries-6"><i class="fa fa-check"></i><b>2.6.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="2.6.2" data-path="random-forest-regression.html"><a href="random-forest-regression.html#importing-the-dataset-6"><i class="fa fa-check"></i><b>2.6.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="2.6.3" data-path="random-forest-regression.html"><a href="random-forest-regression.html#training-the-random-forest-regression-model-on-the-whole-dataset"><i class="fa fa-check"></i><b>2.6.3</b> Training the Random Forest Regression model on the whole dataset</a></li>
+<li class="chapter" data-level="2.6.4" data-path="random-forest-regression.html"><a href="random-forest-regression.html#predicting-a-new-result-2"><i class="fa fa-check"></i><b>2.6.4</b> Predicting a new result</a></li>
+<li class="chapter" data-level="2.6.5" data-path="random-forest-regression.html"><a href="random-forest-regression.html#visualising-the-random-forest-regression-results-higher-resolution"><i class="fa fa-check"></i><b>2.6.5</b> Visualising the Random Forest Regression results (higher resolution)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>3</b> Classification</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>3.1</b> Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="logistic-regression.html"><a href="logistic-regression.html#importing-the-libraries-7"><i class="fa fa-check"></i><b>3.1.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="3.1.2" data-path="logistic-regression.html"><a href="logistic-regression.html#importing-the-dataset-7"><i class="fa fa-check"></i><b>3.1.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="3.1.3" data-path="logistic-regression.html"><a href="logistic-regression.html#encoding-the-target-feature-as-factor"><i class="fa fa-check"></i><b>3.1.3</b> Encoding the target feature as factor</a></li>
+<li class="chapter" data-level="3.1.4" data-path="logistic-regression.html"><a href="logistic-regression.html#splitting-the-dataset-into-the-training-set-and-test-set-3"><i class="fa fa-check"></i><b>3.1.4</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="3.1.5" data-path="logistic-regression.html"><a href="logistic-regression.html#feature-scaling-2"><i class="fa fa-check"></i><b>3.1.5</b> Feature Scaling</a></li>
+<li class="chapter" data-level="3.1.6" data-path="logistic-regression.html"><a href="logistic-regression.html#training-the-logistic-regression-model-on-the-training-set"><i class="fa fa-check"></i><b>3.1.6</b> Training the Logistic Regression model on the Training set</a></li>
+<li class="chapter" data-level="3.1.7" data-path="logistic-regression.html"><a href="logistic-regression.html#predicting-a-new-result-3"><i class="fa fa-check"></i><b>3.1.7</b> Predicting a new result</a></li>
+<li class="chapter" data-level="3.1.8" data-path="logistic-regression.html"><a href="logistic-regression.html#predicting-the-test-set-results-2"><i class="fa fa-check"></i><b>3.1.8</b> Predicting the Test set results</a></li>
+<li class="chapter" data-level="3.1.9" data-path="logistic-regression.html"><a href="logistic-regression.html#making-the-confusion-matrix"><i class="fa fa-check"></i><b>3.1.9</b> Making the Confusion Matrix</a></li>
+<li class="chapter" data-level="3.1.10" data-path="logistic-regression.html"><a href="logistic-regression.html#visualising-the-training-set-results-1"><i class="fa fa-check"></i><b>3.1.10</b> Visualising the Training set results</a></li>
+<li class="chapter" data-level="3.1.11" data-path="logistic-regression.html"><a href="logistic-regression.html#visualising-the-test-set-results-1"><i class="fa fa-check"></i><b>3.1.11</b> Visualising the Test set results</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html"><i class="fa fa-check"></i><b>3.2</b> K-Nearest Neighbours (K-NN)</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#importing-the-libraries-8"><i class="fa fa-check"></i><b>3.2.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="3.2.2" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#importing-the-dataset-8"><i class="fa fa-check"></i><b>3.2.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="3.2.3" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#encoding-the-target-feature-as-factor-1"><i class="fa fa-check"></i><b>3.2.3</b> Encoding the target feature as factor</a></li>
+<li class="chapter" data-level="3.2.4" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#splitting-the-dataset-into-the-training-set-and-test-set-4"><i class="fa fa-check"></i><b>3.2.4</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="3.2.5" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#feature-scaling-3"><i class="fa fa-check"></i><b>3.2.5</b> Feature Scaling</a></li>
+<li class="chapter" data-level="3.2.6" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#training-the-k-nn-model-on-the-training-set"><i class="fa fa-check"></i><b>3.2.6</b> Training the K-NN model on the Training set</a></li>
+<li class="chapter" data-level="3.2.7" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#predicting-a-new-result-4"><i class="fa fa-check"></i><b>3.2.7</b> Predicting a new result</a></li>
+<li class="chapter" data-level="3.2.8" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#predicting-the-test-set-results-3"><i class="fa fa-check"></i><b>3.2.8</b> Predicting the Test set results</a></li>
+<li class="chapter" data-level="3.2.9" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#making-the-confusion-matrix-1"><i class="fa fa-check"></i><b>3.2.9</b> Making the Confusion Matrix</a></li>
+<li class="chapter" data-level="3.2.10" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#visualising-the-training-set-results-2"><i class="fa fa-check"></i><b>3.2.10</b> Visualising the Training set results</a></li>
+<li class="chapter" data-level="3.2.11" data-path="k-nearest-neighbours-k-nn.html"><a href="k-nearest-neighbours-k-nn.html#visualising-the-test-set-results-2"><i class="fa fa-check"></i><b>3.2.11</b> Visualising the Test set results</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html"><i class="fa fa-check"></i><b>3.3</b> Support Vector Machine (SVM)</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#importing-the-libraries-9"><i class="fa fa-check"></i><b>3.3.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="3.3.2" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#importing-the-dataset-9"><i class="fa fa-check"></i><b>3.3.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="3.3.3" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#encoding-the-target-feature-as-factor-2"><i class="fa fa-check"></i><b>3.3.3</b> Encoding the target feature as factor</a></li>
+<li class="chapter" data-level="3.3.4" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#splitting-the-dataset-into-the-training-set-and-test-set-5"><i class="fa fa-check"></i><b>3.3.4</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="3.3.5" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#feature-scaling-4"><i class="fa fa-check"></i><b>3.3.5</b> Feature Scaling</a></li>
+<li class="chapter" data-level="3.3.6" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#training-the-svm-model-on-the-training-set"><i class="fa fa-check"></i><b>3.3.6</b> Training the SVM model on the Training set</a></li>
+<li class="chapter" data-level="3.3.7" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#predicting-a-new-result-5"><i class="fa fa-check"></i><b>3.3.7</b> Predicting a new result</a></li>
+<li class="chapter" data-level="3.3.8" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#predicting-the-test-set-results-4"><i class="fa fa-check"></i><b>3.3.8</b> Predicting the Test set results</a></li>
+<li class="chapter" data-level="3.3.9" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#making-the-confusion-matrix-2"><i class="fa fa-check"></i><b>3.3.9</b> Making the Confusion Matrix</a></li>
+<li class="chapter" data-level="3.3.10" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#visualising-the-training-set-results-3"><i class="fa fa-check"></i><b>3.3.10</b> Visualising the Training set results</a></li>
+<li class="chapter" data-level="3.3.11" data-path="support-vector-machine-svm.html"><a href="support-vector-machine-svm.html#visualising-the-test-set-results-3"><i class="fa fa-check"></i><b>3.3.11</b> Visualising the Test set results</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="kernel-svm.html"><a href="kernel-svm.html"><i class="fa fa-check"></i><b>3.4</b> Kernel SVM</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="kernel-svm.html"><a href="kernel-svm.html#importing-the-libraries-10"><i class="fa fa-check"></i><b>3.4.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="3.4.2" data-path="kernel-svm.html"><a href="kernel-svm.html#importing-the-dataset-10"><i class="fa fa-check"></i><b>3.4.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="3.4.3" data-path="kernel-svm.html"><a href="kernel-svm.html#encoding-the-target-feature-as-factor-3"><i class="fa fa-check"></i><b>3.4.3</b> Encoding the target feature as factor</a></li>
+<li class="chapter" data-level="3.4.4" data-path="kernel-svm.html"><a href="kernel-svm.html#splitting-the-dataset-into-the-training-set-and-test-set-6"><i class="fa fa-check"></i><b>3.4.4</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="3.4.5" data-path="kernel-svm.html"><a href="kernel-svm.html#feature-scaling-5"><i class="fa fa-check"></i><b>3.4.5</b> Feature Scaling</a></li>
+<li class="chapter" data-level="3.4.6" data-path="kernel-svm.html"><a href="kernel-svm.html#training-the-kernel-svm-model-on-the-training-set"><i class="fa fa-check"></i><b>3.4.6</b> Training the Kernel SVM model on the Training set</a></li>
+<li class="chapter" data-level="3.4.7" data-path="kernel-svm.html"><a href="kernel-svm.html#predicting-a-new-result-6"><i class="fa fa-check"></i><b>3.4.7</b> Predicting a new result</a></li>
+<li class="chapter" data-level="3.4.8" data-path="kernel-svm.html"><a href="kernel-svm.html#predicting-the-test-set-results-5"><i class="fa fa-check"></i><b>3.4.8</b> Predicting the Test set results</a></li>
+<li class="chapter" data-level="3.4.9" data-path="kernel-svm.html"><a href="kernel-svm.html#making-the-confusion-matrix-3"><i class="fa fa-check"></i><b>3.4.9</b> Making the Confusion Matrix</a></li>
+<li class="chapter" data-level="3.4.10" data-path="kernel-svm.html"><a href="kernel-svm.html#visualising-the-training-set-results-4"><i class="fa fa-check"></i><b>3.4.10</b> Visualising the Training set results</a></li>
+<li class="chapter" data-level="3.4.11" data-path="kernel-svm.html"><a href="kernel-svm.html#visualising-the-test-set-results-4"><i class="fa fa-check"></i><b>3.4.11</b> Visualising the Test set results</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="naive-bayes.html"><a href="naive-bayes.html"><i class="fa fa-check"></i><b>3.5</b> Naive Bayes</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="naive-bayes.html"><a href="naive-bayes.html#importing-the-libraries-11"><i class="fa fa-check"></i><b>3.5.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="3.5.2" data-path="naive-bayes.html"><a href="naive-bayes.html#importing-the-dataset-11"><i class="fa fa-check"></i><b>3.5.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="3.5.3" data-path="naive-bayes.html"><a href="naive-bayes.html#encoding-the-target-feature-as-factor-4"><i class="fa fa-check"></i><b>3.5.3</b> Encoding the target feature as factor</a></li>
+<li class="chapter" data-level="3.5.4" data-path="naive-bayes.html"><a href="naive-bayes.html#splitting-the-dataset-into-the-training-set-and-test-set-7"><i class="fa fa-check"></i><b>3.5.4</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="3.5.5" data-path="naive-bayes.html"><a href="naive-bayes.html#feature-scaling-6"><i class="fa fa-check"></i><b>3.5.5</b> Feature Scaling</a></li>
+<li class="chapter" data-level="3.5.6" data-path="naive-bayes.html"><a href="naive-bayes.html#training-the-naive-bayes-model-on-the-training-set"><i class="fa fa-check"></i><b>3.5.6</b> Training the Naive Bayes model on the Training set</a></li>
+<li class="chapter" data-level="3.5.7" data-path="naive-bayes.html"><a href="naive-bayes.html#predicting-a-new-result-7"><i class="fa fa-check"></i><b>3.5.7</b> Predicting a new result</a></li>
+<li class="chapter" data-level="3.5.8" data-path="naive-bayes.html"><a href="naive-bayes.html#predicting-the-test-set-results-6"><i class="fa fa-check"></i><b>3.5.8</b> Predicting the Test set results</a></li>
+<li class="chapter" data-level="3.5.9" data-path="naive-bayes.html"><a href="naive-bayes.html#making-the-confusion-matrix-4"><i class="fa fa-check"></i><b>3.5.9</b> Making the Confusion Matrix</a></li>
+<li class="chapter" data-level="3.5.10" data-path="naive-bayes.html"><a href="naive-bayes.html#visualising-the-training-set-results-5"><i class="fa fa-check"></i><b>3.5.10</b> Visualising the Training set results</a></li>
+<li class="chapter" data-level="3.5.11" data-path="naive-bayes.html"><a href="naive-bayes.html#visualising-the-test-set-results-5"><i class="fa fa-check"></i><b>3.5.11</b> Visualising the Test set results</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html"><i class="fa fa-check"></i><b>3.6</b> Decision Tree Classification</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#importing-the-libraries-12"><i class="fa fa-check"></i><b>3.6.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="3.6.2" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#importing-the-dataset-12"><i class="fa fa-check"></i><b>3.6.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="3.6.3" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#encoding-the-target-feature-as-factor-5"><i class="fa fa-check"></i><b>3.6.3</b> Encoding the target feature as factor</a></li>
+<li class="chapter" data-level="3.6.4" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#splitting-the-dataset-into-the-training-set-and-test-set-8"><i class="fa fa-check"></i><b>3.6.4</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="3.6.5" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#feature-scaling-7"><i class="fa fa-check"></i><b>3.6.5</b> Feature Scaling</a></li>
+<li class="chapter" data-level="3.6.6" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#training-the-decision-tree-classification-model-on-the-training-set"><i class="fa fa-check"></i><b>3.6.6</b> Training the Decision Tree Classification model on the Training set</a></li>
+<li class="chapter" data-level="3.6.7" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#predicting-a-new-result-8"><i class="fa fa-check"></i><b>3.6.7</b> Predicting a new result</a></li>
+<li class="chapter" data-level="3.6.8" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#predicting-the-test-set-results-7"><i class="fa fa-check"></i><b>3.6.8</b> Predicting the Test set results</a></li>
+<li class="chapter" data-level="3.6.9" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#making-the-confusion-matrix-5"><i class="fa fa-check"></i><b>3.6.9</b> Making the Confusion Matrix</a></li>
+<li class="chapter" data-level="3.6.10" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#visualising-the-training-set-results-6"><i class="fa fa-check"></i><b>3.6.10</b> Visualising the Training set results</a></li>
+<li class="chapter" data-level="3.6.11" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#visualising-the-test-set-results-6"><i class="fa fa-check"></i><b>3.6.11</b> Visualising the Test set results</a></li>
+<li class="chapter" data-level="3.6.12" data-path="decision-tree-classification.html"><a href="decision-tree-classification.html#plotting-the-tree-1"><i class="fa fa-check"></i><b>3.6.12</b> Plotting the tree</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="random-forest-classification.html"><a href="random-forest-classification.html"><i class="fa fa-check"></i><b>3.7</b> Random Forest Classification</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="random-forest-classification.html"><a href="random-forest-classification.html#importing-the-libraries-13"><i class="fa fa-check"></i><b>3.7.1</b> Importing the libraries</a></li>
+<li class="chapter" data-level="3.7.2" data-path="random-forest-classification.html"><a href="random-forest-classification.html#importing-the-dataset-13"><i class="fa fa-check"></i><b>3.7.2</b> Importing the dataset</a></li>
+<li class="chapter" data-level="3.7.3" data-path="random-forest-classification.html"><a href="random-forest-classification.html#encoding-the-target-feature-as-factor-6"><i class="fa fa-check"></i><b>3.7.3</b> Encoding the target feature as factor</a></li>
+<li class="chapter" data-level="3.7.4" data-path="random-forest-classification.html"><a href="random-forest-classification.html#splitting-the-dataset-into-the-training-set-and-test-set-9"><i class="fa fa-check"></i><b>3.7.4</b> Splitting the dataset into the Training set and Test set</a></li>
+<li class="chapter" data-level="3.7.5" data-path="random-forest-classification.html"><a href="random-forest-classification.html#feature-scaling-8"><i class="fa fa-check"></i><b>3.7.5</b> Feature Scaling</a></li>
+<li class="chapter" data-level="3.7.6" data-path="random-forest-classification.html"><a href="random-forest-classification.html#training-the-random-forest-classification-model-on-the-training-set"><i class="fa fa-check"></i><b>3.7.6</b> Training the Random Forest Classification model on the Training set</a></li>
+<li class="chapter" data-level="3.7.7" data-path="random-forest-classification.html"><a href="random-forest-classification.html#predicting-a-new-result-9"><i class="fa fa-check"></i><b>3.7.7</b> Predicting a new result</a></li>
+<li class="chapter" data-level="3.7.8" data-path="random-forest-classification.html"><a href="random-forest-classification.html#predicting-the-test-set-results-8"><i class="fa fa-check"></i><b>3.7.8</b> Predicting the Test set results</a></li>
+<li class="chapter" data-level="3.7.9" data-path="random-forest-classification.html"><a href="random-forest-classification.html#making-the-confusion-matrix-6"><i class="fa fa-check"></i><b>3.7.9</b> Making the Confusion Matrix</a></li>
+<li class="chapter" data-level="3.7.10" data-path="random-forest-classification.html"><a href="random-forest-classification.html#visualising-the-training-set-results-7"><i class="fa fa-check"></i><b>3.7.10</b> Visualising the Training set results</a></li>
+<li class="chapter" data-level="3.7.11" data-path="random-forest-classification.html"><a href="random-forest-classification.html#visualising-the-test-set-results-7"><i class="fa fa-check"></i><b>3.7.11</b> Visualising the Test set results</a></li>
+<li class="chapter" data-level="3.7.12" data-path="random-forest-classification.html"><a href="random-forest-classification.html#choosing-the-number-of-trees"><i class="fa fa-check"></i><b>3.7.12</b> Choosing the number of trees</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="classification-model-selection-in-python.html"><a href="classification-model-selection-in-python.html"><i class="fa fa-check"></i><b>3.8</b> Classification Model Selection in Python</a>
+<ul>
+<li class="chapter" data-level="3.8.1" data-path="classification-model-selection-in-python.html"><a href="classification-model-selection-in-python.html#heading-3"><i class="fa fa-check"></i><b>3.8.1</b> Heading 3</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html"><i class="fa fa-check"></i><b>4</b> Footnotes and citations</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="footnotes.html"><a href="footnotes.html"><i class="fa fa-check"></i><b>4.1</b> Footnotes</a></li>
+<li class="chapter" data-level="4.2" data-path="citations.html"><a href="citations.html"><i class="fa fa-check"></i><b>4.2</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>5</b> Blocks</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="equations.html"><a href="equations.html"><i class="fa fa-check"></i><b>5.1</b> Equations</a></li>
+<li class="chapter" data-level="5.2" data-path="theorems-and-proofs.html"><a href="theorems-and-proofs.html"><i class="fa fa-check"></i><b>5.2</b> Theorems and proofs</a></li>
+<li class="chapter" data-level="5.3" data-path="callout-blocks.html"><a href="callout-blocks.html"><i class="fa fa-check"></i><b>5.3</b> Callout blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>6</b> Sharing your book</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="publishing.html"><a href="publishing.html"><i class="fa fa-check"></i><b>6.1</b> Publishing</a></li>
+<li class="chapter" data-level="6.2" data-path="pages.html"><a href="pages.html"><i class="fa fa-check"></i><b>6.2</b> 404 pages</a></li>
+<li class="chapter" data-level="6.3" data-path="metadata-for-sharing.html"><a href="metadata-for-sharing.html"><i class="fa fa-check"></i><b>6.3</b> Metadata for sharing</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-2.html"><a href="references-2.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-3.html"><a href="references-3.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Machine Learning A-Z</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="equations" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Equations</h2>
+<p>Here is an equation.</p>
+<p><span class="math display" id="eq:binom">\[\begin{equation} 
+  f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
+  \tag{5.1}
+\end{equation}\]</span></p>
+<p>You may refer to using <code>\@ref(eq:binom)</code>, like see Equation <a href="equations.html#eq:binom">(5.1)</a>.</p>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="blocks.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="theorems-and-proofs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-association-rule-learning.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

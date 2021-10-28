@@ -1,0 +1,774 @@
+# Regression
+
+## Simple Linear Regression
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Salary_Data.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Salary_Data.csv')
+```
+
+### Splitting the dataset into the Training set and Test set
+
+Python
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 1/3, random_state = 0)
+```
+
+R
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Salary, SplitRatio = 2/3)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Training the Simple Linear Regression model on the Training set
+
+Python
+
+```{python}
+from sklearn.linear_model import LinearRegression
+regressor = LinearRegression()
+regressor.fit(X_train, y_train)
+```
+
+R
+
+```{r}
+regressor = lm(formula = Salary ~ YearsExperience,
+               data = training_set)
+```
+
+### Predicting the Test set results
+
+Python
+
+```{python}
+y_pred = regressor.predict(X_test)
+```
+
+R
+
+```{r}
+y_pred = predict(regressor, newdata = test_set)
+```
+
+### Visualising the Training set results
+
+Python
+
+```{python}
+plt.scatter(X_train, y_train, color = 'red')
+plt.plot(X_train, regressor.predict(X_train), color = 'blue')
+plt.title('Salary vs Experience (Training set)')
+plt.xlabel('Years of Experience')
+plt.ylabel('Salary')
+plt.show()
+```
+
+R
+
+```{r}
+# install.packages('ggplot2')
+library(ggplot2)
+ggplot() +
+  geom_point(aes(x = training_set$YearsExperience, y = training_set$Salary),
+             colour = 'red') +
+  geom_line(aes(x = training_set$YearsExperience, y = predict(regressor, newdata = training_set)),
+            colour = 'blue') +
+  ggtitle('Salary vs Experience (Training set)') +
+  xlab('Years of experience') +
+  ylab('Salary')
+```
+
+### Visualising the Test set results
+
+Python
+
+```{python}
+plt.scatter(X_test, y_test, color = 'red')
+plt.plot(X_train, regressor.predict(X_train), color = 'blue')
+plt.title('Salary vs Experience (Test set)')
+plt.xlabel('Years of Experience')
+plt.ylabel('Salary')
+plt.show()
+```
+
+R
+
+```{r}
+# install.packages('ggplot2')
+library(ggplot2)
+ggplot() +
+  geom_point(aes(x = test_set$YearsExperience, y = test_set$Salary),
+             colour = 'red') +
+  geom_line(aes(x = training_set$YearsExperience, y = predict(regressor, newdata = training_set)),
+            colour = 'blue') +
+  ggtitle('Salary vs Experience (Test set)') +
+  xlab('Years of experience') +
+  ylab('Salary')
+```
+
+## Multiple Linear Regression
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('50_Startups.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+print(X)
+```
+
+R
+
+```{r}
+dataset = read.csv('50_Startups.csv')
+```
+
+### Encoding categorical data
+
+Python
+
+```{python}
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [3])], remainder='passthrough')
+X = np.array(ct.fit_transform(X))
+print(X)
+```
+
+R
+
+```{r}
+dataset$State = factor(dataset$State,
+                       levels = c('New York', 'California', 'Florida'),
+                       labels = c(1, 2, 3))
+```
+
+### Splitting the dataset into the Training set and Test set
+
+Python
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
+```
+
+R
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Profit, SplitRatio = 0.8)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Training the Multiple Linear Regression model on the Training set
+
+Python
+
+```{python}
+from sklearn.linear_model import LinearRegression
+regressor = LinearRegression()
+regressor.fit(X_train, y_train)
+```
+
+R
+
+```{r}
+regressor = lm(formula = Profit ~ .,
+               data = training_set)
+```
+
+### Predicting the Test set results
+
+Python
+
+```{python}
+y_pred = regressor.predict(X_test)
+np.set_printoptions(precision=2)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+```
+
+R
+
+```{r}
+y_pred = predict(regressor, newdata = test_set)
+```
+
+## Polynomial Regression
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Position_Salaries.csv')
+X = dataset.iloc[:, 1:-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Position_Salaries.csv')
+dataset = dataset[2:3]
+```
+
+### Training the Linear Regression model on the whole dataset
+
+Python
+
+```{python}
+from sklearn.linear_model import LinearRegression
+lin_reg = LinearRegression()
+lin_reg.fit(X, y)
+```
+
+R
+
+```{r}
+lin_reg = lm(formula = Salary ~ .,
+             data = dataset)
+```
+
+### Training the Polynomial Regression model on the whole dataset
+
+Python
+
+```{python}
+from sklearn.preprocessing import PolynomialFeatures
+poly_reg = PolynomialFeatures(degree = 4)
+X_poly = poly_reg.fit_transform(X)
+lin_reg_2 = LinearRegression()
+lin_reg_2.fit(X_poly, y)
+```
+
+R
+
+```{r}
+dataset$Level2 = dataset$Level^2
+dataset$Level3 = dataset$Level^3
+dataset$Level4 = dataset$Level^4
+poly_reg = lm(formula = Salary ~ .,
+              data = dataset)
+```
+
+### Visualising the Linear Regression results
+
+Python
+
+```{python}
+plt.scatter(X, y, color = 'red')
+plt.plot(X, lin_reg.predict(X), color = 'blue')
+plt.title('Truth or Bluff (Linear Regression)')
+plt.xlabel('Position Level')
+plt.ylabel('Salary')
+plt.show()
+```
+
+R
+
+```{r}
+# install.packages('ggplot2')
+library(ggplot2)
+ggplot() +
+  geom_point(aes(x = dataset$Level, y = dataset$Salary),
+             colour = 'red') +
+  geom_line(aes(x = dataset$Level, y = predict(lin_reg, newdata = dataset)),
+            colour = 'blue') +
+  ggtitle('Truth or Bluff (Linear Regression)') +
+  xlab('Level') +
+  ylab('Salary')
+```
+
+### Visualising the Polynomial Regression results
+
+Python
+
+```{python}
+plt.scatter(X, y, color = 'red')
+plt.plot(X, lin_reg_2.predict(poly_reg.fit_transform(X)), color = 'blue')
+plt.title('Truth or Bluff (Polynomial Regression)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+```
+
+R
+
+```{r}
+# install.packages('ggplot2')
+library(ggplot2)
+ggplot() +
+  geom_point(aes(x = dataset$Level, y = dataset$Salary),
+             colour = 'red') +
+  geom_line(aes(x = dataset$Level, y = predict(poly_reg, newdata = dataset)),
+            colour = 'blue') +
+  ggtitle('Truth or Bluff (Polynomial Regression)') +
+  xlab('Level') +
+  ylab('Salary')
+```
+
+### Visualising the Polynomial Regression results (for higher resolution and smoother curve)
+
+Python
+
+```{python}
+X_grid = np.arange(min(X), max(X), 0.1)
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(X, y, color = 'red')
+plt.plot(X_grid, lin_reg_2.predict(poly_reg.fit_transform(X_grid)), color = 'blue')
+plt.title('Truth or Bluff (Polynomial Regression)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+```
+
+R
+
+```{r}
+# install.packages('ggplot2')
+library(ggplot2)
+x_grid = seq(min(dataset$Level), max(dataset$Level), 0.1)
+ggplot() +
+  geom_point(aes(x = dataset$Level, y = dataset$Salary),
+             colour = 'red') +
+  geom_line(aes(x = x_grid, y = predict(poly_reg,
+                                        newdata = data.frame(Level = x_grid,
+                                                             Level2 = x_grid^2,
+                                                             Level3 = x_grid^3,
+                                                             Level4 = x_grid^4))),
+            colour = 'blue') +
+  ggtitle('Truth or Bluff (Polynomial Regression)') +
+  xlab('Level') +
+  ylab('Salary')
+```
+
+### Predicting a new result with Linear Regression
+
+Python
+
+```{python}
+lin_reg.predict([[6.5]])
+```
+
+R
+
+```{r}
+predict(lin_reg, data.frame(Level = 6.5))
+```
+
+### Predicting a new result with Polynomial Regression
+
+Python
+
+```{python}
+lin_reg_2.predict(poly_reg.fit_transform([[6.5]]))
+```
+
+R
+
+```{r}
+predict(poly_reg, data.frame(Level = 6.5,
+                             Level2 = 6.5^2,
+                             Level3 = 6.5^3,
+                             Level4 = 6.5^4))
+```
+
+## Support Vector Regression
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Position_Salaries.csv')
+X = dataset.iloc[:, 1:-1].values
+y = dataset.iloc[:, -1].values
+print(X)
+print(y)
+y = y.reshape(len(y),1)
+print(y)
+```
+
+R
+
+```{r}
+dataset = read.csv('Position_Salaries.csv')
+dataset = dataset[2:3]
+```
+
+### Feature Scaling
+
+Python
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+sc_X = StandardScaler()
+sc_y = StandardScaler()
+X = sc_X.fit_transform(X)
+y = sc_y.fit_transform(y)
+print(X)
+print(y)
+```
+
+R
+
+```{r}
+# training_set = scale(training_set)
+# test_set = scale(test_set)
+```
+
+### Training the SVR model on the whole dataset
+
+Python
+
+```{python}
+from sklearn.svm import SVR
+regressor = SVR(kernel = 'rbf')
+regressor.fit(X, y)
+```
+
+R
+
+```{r}
+# install.packages('e1071')
+library(e1071)
+regressor = svm(formula = Salary ~ .,
+                data = dataset,
+                type = 'eps-regression',
+                kernel = 'radial')
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+sc_y.inverse_transform(regressor.predict(sc_X.transform([[6.5]])))
+```
+
+R
+
+```{r}
+y_pred = predict(regressor, data.frame(Level = 6.5))
+```
+
+### Visualising the SVR results
+
+Python
+
+```{python}
+plt.scatter(sc_X.inverse_transform(X), sc_y.inverse_transform(y), color = 'red')
+plt.plot(sc_X.inverse_transform(X), sc_y.inverse_transform(regressor.predict(X)), color = 'blue')
+plt.title('Truth or Bluff (SVR)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+```
+
+R
+
+```{r}
+# install.packages('ggplot2')
+library(ggplot2)
+ggplot() +
+  geom_point(aes(x = dataset$Level, y = dataset$Salary),
+             colour = 'red') +
+  geom_line(aes(x = dataset$Level, y = predict(regressor, newdata = dataset)),
+            colour = 'blue') +
+  ggtitle('Truth or Bluff (SVR)') +
+  xlab('Level') +
+  ylab('Salary')
+```
+
+### Visualising the SVR results (for higher resolution and smoother curve)
+
+Python
+
+```{python}
+X_grid = np.arange(min(sc_X.inverse_transform(X)), max(sc_X.inverse_transform(X)), 0.1)
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(sc_X.inverse_transform(X), sc_y.inverse_transform(y), color = 'red')
+plt.plot(X_grid, sc_y.inverse_transform(regressor.predict(sc_X.transform(X_grid))), color = 'blue')
+plt.title('Truth or Bluff (SVR)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+```
+
+R
+
+```{r}
+# install.packages('ggplot2')
+library(ggplot2)
+x_grid = seq(min(dataset$Level), max(dataset$Level), 0.1)
+ggplot() +
+  geom_point(aes(x = dataset$Level, y = dataset$Salary),
+             colour = 'red') +
+  geom_line(aes(x = x_grid, y = predict(regressor, newdata = data.frame(Level = x_grid))),
+            colour = 'blue') +
+  ggtitle('Truth or Bluff (SVR)') +
+  xlab('Level') +
+  ylab('Salary')
+```
+
+## Decision Tree Regression
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Position_Salaries.csv')
+X = dataset.iloc[:, 1:-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Position_Salaries.csv')
+dataset = dataset[2:3]
+```
+
+### Training the Decision Tree Regression model on the whole dataset
+
+Python
+
+```{python}
+from sklearn.tree import DecisionTreeRegressor
+regressor = DecisionTreeRegressor(random_state = 0)
+regressor.fit(X, y)
+```
+
+R
+
+```{r}
+# install.packages('rpart')
+library(rpart)
+regressor = rpart(formula = Salary ~ .,
+                  data = dataset,
+                  control = rpart.control(minsplit = 1))
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+regressor.predict([[6.5]])
+```
+
+R
+
+```{r}
+y_pred = predict(regressor, data.frame(Level = 6.5))
+```
+
+### Visualising the Decision Tree Regression results (higher resolution)
+
+Python
+
+```{python}
+X_grid = np.arange(min(X), max(X), 0.01)
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(X, y, color = 'red')
+plt.plot(X_grid, regressor.predict(X_grid), color = 'blue')
+plt.title('Truth or Bluff (Decision Tree Regression)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+```
+
+R
+
+```{r}
+# install.packages('ggplot2')
+library(ggplot2)
+x_grid = seq(min(dataset$Level), max(dataset$Level), 0.01)
+ggplot() +
+  geom_point(aes(x = dataset$Level, y = dataset$Salary),
+             colour = 'red') +
+  geom_line(aes(x = x_grid, y = predict(regressor, newdata = data.frame(Level = x_grid))),
+            colour = 'blue') +
+  ggtitle('Truth or Bluff (Decision Tree Regression)') +
+  xlab('Level') +
+  ylab('Salary')
+```
+
+### Plotting the tree
+
+R
+
+```{r}
+plot(regressor)
+text(regressor)
+```
+
+## Random Forest Regression
+
+### Importing the libraries
+
+Python
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+Python
+
+```{python}
+dataset = pd.read_csv('Position_Salaries.csv')
+X = dataset.iloc[:, 1:-1].values
+y = dataset.iloc[:, -1].values
+```
+
+R
+
+```{r}
+dataset = read.csv('Position_Salaries.csv')
+dataset = dataset[2:3]
+```
+
+### Training the Random Forest Regression model on the whole dataset
+
+Python
+
+```{python}
+from sklearn.ensemble import RandomForestRegressor
+regressor = RandomForestRegressor(n_estimators = 10, random_state = 0)
+regressor.fit(X, y)
+```
+
+R
+
+```{r}
+# install.packages('randomForest')
+library(randomForest)
+set.seed(1234)
+regressor = randomForest(x = dataset[-2],
+                         y = dataset$Salary,
+                         ntree = 500)
+```
+
+### Predicting a new result
+
+Python
+
+```{python}
+regressor.predict([[6.5]])
+```
+
+R
+
+```{r}
+y_pred = predict(regressor, data.frame(Level = 6.5))
+```
+
+### Visualising the Random Forest Regression results (higher resolution)
+
+Python
+
+```{python}
+X_grid = np.arange(min(X), max(X), 0.01)
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(X, y, color = 'red')
+plt.plot(X_grid, regressor.predict(X_grid), color = 'blue')
+plt.title('Truth or Bluff (Random Forest Regression)')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show()
+```
+
+R
+
+```{r}
+# install.packages('ggplot2')
+library(ggplot2)
+x_grid = seq(min(dataset$Level), max(dataset$Level), 0.01)
+ggplot() +
+  geom_point(aes(x = dataset$Level, y = dataset$Salary),
+             colour = 'red') +
+  geom_line(aes(x = x_grid, y = predict(regressor, newdata = data.frame(Level = x_grid))),
+            colour = 'blue') +
+  ggtitle('Truth or Bluff (Random Forest Regression)') +
+  xlab('Level') +
+  ylab('Salary')
+```

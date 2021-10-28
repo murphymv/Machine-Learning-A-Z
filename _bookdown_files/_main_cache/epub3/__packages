@@ -1,0 +1,8 @@
+base
+caTools
+ggplot2
+e1071
+rpart
+randomForest
+ElemStatLearn
+class
