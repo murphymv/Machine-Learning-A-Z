@@ -4,7 +4,7 @@
 
 ### Importing the libraries
 
-Python
+**Python**
 
 ```{python}
 import numpy as np
@@ -14,7 +14,7 @@ import pandas as pd
 
 ### Importing the dataset
 
-Python
+**Python**
 
 ```{python}
 dataset = pd.read_csv('Salary_Data.csv')
@@ -22,7 +22,7 @@ X = dataset.iloc[:, :-1].values
 y = dataset.iloc[:, -1].values
 ```
 
-R
+**R**
 
 ```{r}
 dataset = read.csv('Salary_Data.csv')
@@ -30,14 +30,14 @@ dataset = read.csv('Salary_Data.csv')
 
 ### Splitting the dataset into the Training set and Test set
 
-Python
+**Python**
 
 ```{python}
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 1/3, random_state = 0)
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('caTools')
@@ -50,7 +50,7 @@ test_set = subset(dataset, split == FALSE)
 
 ### Training the Simple Linear Regression model on the Training set
 
-Python
+**Python**
 
 ```{python}
 from sklearn.linear_model import LinearRegression
@@ -58,7 +58,7 @@ regressor = LinearRegression()
 regressor.fit(X_train, y_train)
 ```
 
-R
+**R**
 
 ```{r}
 regressor = lm(formula = Salary ~ YearsExperience,
@@ -67,13 +67,13 @@ regressor = lm(formula = Salary ~ YearsExperience,
 
 ### Predicting the Test set results
 
-Python
+**Python**
 
 ```{python}
 y_pred = regressor.predict(X_test)
 ```
 
-R
+**R**
 
 ```{r}
 y_pred = predict(regressor, newdata = test_set)
@@ -81,7 +81,7 @@ y_pred = predict(regressor, newdata = test_set)
 
 ### Visualising the Training set results
 
-Python
+**Python**
 
 ```{python}
 plt.scatter(X_train, y_train, color = 'red')
@@ -92,7 +92,7 @@ plt.ylabel('Salary')
 plt.show()
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('ggplot2')
@@ -109,7 +109,7 @@ ggplot() +
 
 ### Visualising the Test set results
 
-Python
+**Python**
 
 ```{python}
 plt.scatter(X_test, y_test, color = 'red')
@@ -120,7 +120,7 @@ plt.ylabel('Salary')
 plt.show()
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('ggplot2')
@@ -139,7 +139,7 @@ ggplot() +
 
 ### Importing the libraries
 
-Python
+**Python**
 
 ```{python}
 import numpy as np
@@ -149,7 +149,7 @@ import pandas as pd
 
 ### Importing the dataset
 
-Python
+**Python**
 
 ```{python}
 dataset = pd.read_csv('50_Startups.csv')
@@ -158,7 +158,7 @@ y = dataset.iloc[:, -1].values
 print(X)
 ```
 
-R
+**R**
 
 ```{r}
 dataset = read.csv('50_Startups.csv')
@@ -166,7 +166,7 @@ dataset = read.csv('50_Startups.csv')
 
 ### Encoding categorical data
 
-Python
+**Python**
 
 ```{python}
 from sklearn.compose import ColumnTransformer
@@ -176,7 +176,7 @@ X = np.array(ct.fit_transform(X))
 print(X)
 ```
 
-R
+**R**
 
 ```{r}
 dataset$State = factor(dataset$State,
@@ -186,14 +186,14 @@ dataset$State = factor(dataset$State,
 
 ### Splitting the dataset into the Training set and Test set
 
-Python
+**Python**
 
 ```{python}
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('caTools')
@@ -206,7 +206,7 @@ test_set = subset(dataset, split == FALSE)
 
 ### Training the Multiple Linear Regression model on the Training set
 
-Python
+**Python**
 
 ```{python}
 from sklearn.linear_model import LinearRegression
@@ -214,7 +214,7 @@ regressor = LinearRegression()
 regressor.fit(X_train, y_train)
 ```
 
-R
+**R**
 
 ```{r}
 regressor = lm(formula = Profit ~ .,
@@ -223,7 +223,7 @@ regressor = lm(formula = Profit ~ .,
 
 ### Predicting the Test set results
 
-Python
+**Python**
 
 ```{python}
 y_pred = regressor.predict(X_test)
@@ -231,7 +231,7 @@ np.set_printoptions(precision=2)
 print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
 ```
 
-R
+**R**
 
 ```{r}
 y_pred = predict(regressor, newdata = test_set)
@@ -241,7 +241,7 @@ y_pred = predict(regressor, newdata = test_set)
 
 ### Importing the libraries
 
-Python
+**Python**
 
 ```{python}
 import numpy as np
@@ -251,7 +251,7 @@ import pandas as pd
 
 ### Importing the dataset
 
-Python
+**Python**
 
 ```{python}
 dataset = pd.read_csv('Position_Salaries.csv')
@@ -259,7 +259,7 @@ X = dataset.iloc[:, 1:-1].values
 y = dataset.iloc[:, -1].values
 ```
 
-R
+**R**
 
 ```{r}
 dataset = read.csv('Position_Salaries.csv')
@@ -268,7 +268,7 @@ dataset = dataset[2:3]
 
 ### Training the Linear Regression model on the whole dataset
 
-Python
+**Python**
 
 ```{python}
 from sklearn.linear_model import LinearRegression
@@ -276,7 +276,7 @@ lin_reg = LinearRegression()
 lin_reg.fit(X, y)
 ```
 
-R
+**R**
 
 ```{r}
 lin_reg = lm(formula = Salary ~ .,
@@ -285,7 +285,7 @@ lin_reg = lm(formula = Salary ~ .,
 
 ### Training the Polynomial Regression model on the whole dataset
 
-Python
+**Python**
 
 ```{python}
 from sklearn.preprocessing import PolynomialFeatures
@@ -295,7 +295,7 @@ lin_reg_2 = LinearRegression()
 lin_reg_2.fit(X_poly, y)
 ```
 
-R
+**R**
 
 ```{r}
 dataset$Level2 = dataset$Level^2
@@ -307,7 +307,7 @@ poly_reg = lm(formula = Salary ~ .,
 
 ### Visualising the Linear Regression results
 
-Python
+**Python**
 
 ```{python}
 plt.scatter(X, y, color = 'red')
@@ -318,7 +318,7 @@ plt.ylabel('Salary')
 plt.show()
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('ggplot2')
@@ -335,7 +335,7 @@ ggplot() +
 
 ### Visualising the Polynomial Regression results
 
-Python
+**Python**
 
 ```{python}
 plt.scatter(X, y, color = 'red')
@@ -346,7 +346,7 @@ plt.ylabel('Salary')
 plt.show()
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('ggplot2')
@@ -363,7 +363,7 @@ ggplot() +
 
 ### Visualising the Polynomial Regression results (for higher resolution and smoother curve)
 
-Python
+**Python**
 
 ```{python}
 X_grid = np.arange(min(X), max(X), 0.1)
@@ -376,7 +376,7 @@ plt.ylabel('Salary')
 plt.show()
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('ggplot2')
@@ -398,13 +398,13 @@ ggplot() +
 
 ### Predicting a new result with Linear Regression
 
-Python
+**Python**
 
 ```{python}
 lin_reg.predict([[6.5]])
 ```
 
-R
+**R**
 
 ```{r}
 predict(lin_reg, data.frame(Level = 6.5))
@@ -412,13 +412,13 @@ predict(lin_reg, data.frame(Level = 6.5))
 
 ### Predicting a new result with Polynomial Regression
 
-Python
+**Python**
 
 ```{python}
 lin_reg_2.predict(poly_reg.fit_transform([[6.5]]))
 ```
 
-R
+**R**
 
 ```{r}
 predict(poly_reg, data.frame(Level = 6.5,
@@ -431,7 +431,7 @@ predict(poly_reg, data.frame(Level = 6.5,
 
 ### Importing the libraries
 
-Python
+**Python**
 
 ```{python}
 import numpy as np
@@ -441,7 +441,7 @@ import pandas as pd
 
 ### Importing the dataset
 
-Python
+**Python**
 
 ```{python}
 dataset = pd.read_csv('Position_Salaries.csv')
@@ -453,7 +453,7 @@ y = y.reshape(len(y),1)
 print(y)
 ```
 
-R
+**R**
 
 ```{r}
 dataset = read.csv('Position_Salaries.csv')
@@ -462,7 +462,7 @@ dataset = dataset[2:3]
 
 ### Feature Scaling
 
-Python
+**Python**
 
 ```{python}
 from sklearn.preprocessing import StandardScaler
@@ -474,7 +474,7 @@ print(X)
 print(y)
 ```
 
-R
+**R**
 
 ```{r}
 # training_set = scale(training_set)
@@ -483,7 +483,7 @@ R
 
 ### Training the SVR model on the whole dataset
 
-Python
+**Python**
 
 ```{python}
 from sklearn.svm import SVR
@@ -491,7 +491,7 @@ regressor = SVR(kernel = 'rbf')
 regressor.fit(X, y)
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('e1071')
@@ -504,13 +504,13 @@ regressor = svm(formula = Salary ~ .,
 
 ### Predicting a new result
 
-Python
+**Python**
 
 ```{python}
 sc_y.inverse_transform(regressor.predict(sc_X.transform([[6.5]])))
 ```
 
-R
+**R**
 
 ```{r}
 y_pred = predict(regressor, data.frame(Level = 6.5))
@@ -518,7 +518,7 @@ y_pred = predict(regressor, data.frame(Level = 6.5))
 
 ### Visualising the SVR results
 
-Python
+**Python**
 
 ```{python}
 plt.scatter(sc_X.inverse_transform(X), sc_y.inverse_transform(y), color = 'red')
@@ -529,7 +529,7 @@ plt.ylabel('Salary')
 plt.show()
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('ggplot2')
@@ -546,7 +546,7 @@ ggplot() +
 
 ### Visualising the SVR results (for higher resolution and smoother curve)
 
-Python
+**Python**
 
 ```{python}
 X_grid = np.arange(min(sc_X.inverse_transform(X)), max(sc_X.inverse_transform(X)), 0.1)
@@ -559,7 +559,7 @@ plt.ylabel('Salary')
 plt.show()
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('ggplot2')
@@ -579,7 +579,7 @@ ggplot() +
 
 ### Importing the libraries
 
-Python
+**Python**
 
 ```{python}
 import numpy as np
@@ -589,7 +589,7 @@ import pandas as pd
 
 ### Importing the dataset
 
-Python
+**Python**
 
 ```{python}
 dataset = pd.read_csv('Position_Salaries.csv')
@@ -597,7 +597,7 @@ X = dataset.iloc[:, 1:-1].values
 y = dataset.iloc[:, -1].values
 ```
 
-R
+**R**
 
 ```{r}
 dataset = read.csv('Position_Salaries.csv')
@@ -606,7 +606,7 @@ dataset = dataset[2:3]
 
 ### Training the Decision Tree Regression model on the whole dataset
 
-Python
+**Python**
 
 ```{python}
 from sklearn.tree import DecisionTreeRegressor
@@ -614,7 +614,7 @@ regressor = DecisionTreeRegressor(random_state = 0)
 regressor.fit(X, y)
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('rpart')
@@ -626,13 +626,13 @@ regressor = rpart(formula = Salary ~ .,
 
 ### Predicting a new result
 
-Python
+**Python**
 
 ```{python}
 regressor.predict([[6.5]])
 ```
 
-R
+**R**
 
 ```{r}
 y_pred = predict(regressor, data.frame(Level = 6.5))
@@ -640,7 +640,7 @@ y_pred = predict(regressor, data.frame(Level = 6.5))
 
 ### Visualising the Decision Tree Regression results (higher resolution)
 
-Python
+**Python**
 
 ```{python}
 X_grid = np.arange(min(X), max(X), 0.01)
@@ -653,7 +653,7 @@ plt.ylabel('Salary')
 plt.show()
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('ggplot2')
@@ -671,7 +671,7 @@ ggplot() +
 
 ### Plotting the tree
 
-R
+**R**
 
 ```{r}
 plot(regressor)
@@ -682,7 +682,7 @@ text(regressor)
 
 ### Importing the libraries
 
-Python
+**Python**
 
 ```{python}
 import numpy as np
@@ -692,7 +692,7 @@ import pandas as pd
 
 ### Importing the dataset
 
-Python
+**Python**
 
 ```{python}
 dataset = pd.read_csv('Position_Salaries.csv')
@@ -700,7 +700,7 @@ X = dataset.iloc[:, 1:-1].values
 y = dataset.iloc[:, -1].values
 ```
 
-R
+**R**
 
 ```{r}
 dataset = read.csv('Position_Salaries.csv')
@@ -709,7 +709,7 @@ dataset = dataset[2:3]
 
 ### Training the Random Forest Regression model on the whole dataset
 
-Python
+**Python**
 
 ```{python}
 from sklearn.ensemble import RandomForestRegressor
@@ -717,7 +717,7 @@ regressor = RandomForestRegressor(n_estimators = 10, random_state = 0)
 regressor.fit(X, y)
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('randomForest')
@@ -730,13 +730,13 @@ regressor = randomForest(x = dataset[-2],
 
 ### Predicting a new result
 
-Python
+**Python**
 
 ```{python}
 regressor.predict([[6.5]])
 ```
 
-R
+**R**
 
 ```{r}
 y_pred = predict(regressor, data.frame(Level = 6.5))
@@ -744,7 +744,7 @@ y_pred = predict(regressor, data.frame(Level = 6.5))
 
 ### Visualising the Random Forest Regression results (higher resolution)
 
-Python
+**Python**
 
 ```{python}
 X_grid = np.arange(min(X), max(X), 0.01)
@@ -757,7 +757,7 @@ plt.ylabel('Salary')
 plt.show()
 ```
 
-R
+**R**
 
 ```{r}
 # install.packages('ggplot2')

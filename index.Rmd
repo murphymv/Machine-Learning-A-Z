@@ -1,16 +1,15 @@
 ---
 title: "Machine Learning A-Z"
 # author: "Mark V. Murphy"
+# author: "Kirill Eremenko, Hadelin de Ponteves""
 # date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
-# bibliography: [book.bib, packages.bib]
-# url: your book url like https://bookdown.org/yihui/bookdown
-# cover-image: path to the social sharing image like images/cover.jpg
+url: https://murphymv.github.io/Machine-Learning-A-Z/
+cover-image: images/cover.jpg
 description: |
   Learn to create Machine Learning Algorithms in Python and R from two Data 
   Science experts. Code templates included.
-# link-citations: yes
 github-repo: "murphymv/Machine-Learning-A-Z"
 ---
 
@@ -21,10 +20,6 @@ knitr::opts_chunk$set(
   eval = TRUE,
   collapse = TRUE
 )
-# automatically create a bib database for R packages
-# knitr::write_bib(c(
-#   .packages(), 'bookdown', 'knitr', 'rmarkdown'
-# ), 'packages.bib')
 ```
 
 # Course Outline {.unnumbered}

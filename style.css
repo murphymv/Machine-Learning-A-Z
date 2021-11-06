@@ -93,8 +93,9 @@ code span.sc {
   color: rgb(86, 156, 214);
   font-weight: normal;
 }
-/* Comment */
-code span.co {
+/* Comment, Message */
+code span.co,
+code span.do {
   color: rgb(106, 153, 85);
   font-style: normal;
 }

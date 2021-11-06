@@ -1,0 +1,168 @@
+# Natural Language Processing
+
+### Importing the libraries
+
+**Python**
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+```
+
+### Importing the dataset
+
+**Python**
+
+```{python}
+dataset = pd.read_csv('Restaurant_Reviews.tsv', delimiter = '\t', quoting = 3)
+```
+
+**R**
+
+```{r}
+dataset_original = read.delim('Restaurant_Reviews.tsv', quote = '', stringsAsFactors = FALSE)
+```
+
+### Cleaning the texts
+
+**Python**
+
+```{python}
+import re
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+from nltk.stem.porter import PorterStemmer
+corpus = []
+for i in range(0, 1000):
+  review = re.sub('[^a-zA-Z]', ' ', dataset['Review'][i])
+  review = review.lower()
+  review = review.split()
+  ps = PorterStemmer()
+  all_stopwords = stopwords.words('english')
+  all_stopwords.remove('not')
+  review = [ps.stem(word) for word in review if not word in set(all_stopwords)]
+  review = ' '.join(review)
+  corpus.append(review)
+print(corpus)
+```
+
+**R**
+
+```{r}
+# install.packages('tm')
+# install.packages('SnowballC')
+library(tm)
+library(SnowballC)
+corpus = VCorpus(VectorSource(dataset_original$Review))
+corpus = tm_map(corpus, content_transformer(tolower))
+corpus = tm_map(corpus, removeNumbers)
+corpus = tm_map(corpus, removePunctuation)
+corpus = tm_map(corpus, removeWords, stopwords())
+corpus = tm_map(corpus, stemDocument)
+corpus = tm_map(corpus, stripWhitespace)
+```
+
+### Creating the Bag of Words model
+
+**Python**
+
+```{python}
+from sklearn.feature_extraction.text import CountVectorizer
+cv = CountVectorizer(max_features = 1500)
+X = cv.fit_transform(corpus).toarray()
+y = dataset.iloc[:, -1].values
+```
+
+**R**
+
+```{r}
+dtm = DocumentTermMatrix(corpus)
+dtm = removeSparseTerms(dtm, 0.999)
+dataset = as.data.frame(as.matrix(dtm))
+dataset$Liked = dataset_original$Liked
+```
+
+### Encoding the target feature as factor
+
+**R**
+
+```{r}
+dataset$Liked = factor(dataset$Liked, levels = c(0, 1))
+```
+
+### Splitting the dataset into the Training set and Test set
+
+**Python**
+
+```{python}
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
+```
+
+**R**
+
+```{r}
+# install.packages('caTools')
+library(caTools)
+set.seed(123)
+split = sample.split(dataset$Liked, SplitRatio = 0.8)
+training_set = subset(dataset, split == TRUE)
+test_set = subset(dataset, split == FALSE)
+```
+
+### Training the Naive Bayes model on the Training set
+
+**Python**
+
+```{python}
+from sklearn.naive_bayes import GaussianNB
+classifier = GaussianNB()
+classifier.fit(X_train, y_train)
+```
+
+### Fitting Random Forest Classification to the Training set
+
+**R**
+
+```{r}
+# install.packages('randomForest')
+library(randomForest)
+classifier = randomForest(x = training_set[-692],
+                          y = training_set$Liked,
+                          ntree = 10)
+
+```
+
+### Predicting the Test set results
+
+**Python**
+
+```{python}
+y_pred = classifier.predict(X_test)
+print(np.concatenate((y_pred.reshape(len(y_pred),1), y_test.reshape(len(y_test),1)),1))
+```
+
+**R**
+
+```{r}
+y_pred = predict(classifier, newdata = test_set[-692])
+```
+
+### Making the Confusion Matrix
+
+**Python**
+
+```{python}
+from sklearn.metrics import confusion_matrix, accuracy_score
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+accuracy_score(y_test, y_pred)
+```
+
+**R**
+
+```{r}
+cm = table(test_set[, 692], y_pred)
+```
