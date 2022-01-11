@@ -28,7 +28,6 @@ dataset = read.csv('Mall_Customers.csv')
 dataset = dataset[4:5]
 ```
 
-
 ### Using the elbow method to find the optimal number of clusters
 
 **Python**

@@ -166,7 +166,8 @@ grid_search = GridSearchCV(estimator = classifier,
                            param_grid = parameters,
                            scoring = 'accuracy',
                            cv = 10,
-                           n_jobs = -1)
+                           # n_jobs = -1)
+                           n_jobs = 1)
 grid_search.fit(X_train, y_train)
 best_accuracy = grid_search.best_score_
 best_parameters = grid_search.best_params_
@@ -284,8 +285,8 @@ import pandas as pd
 **Python**
 
 ```{python}
-dataset = pd.read_csv('Data.csv')
-# dataset = pd.read_csv('Churn_Modelling.csv')
+# dataset = pd.read_csv('Data.csv')
+dataset = pd.read_csv('Data2.csv')
 X = dataset.iloc[:, :-1].values
 y = dataset.iloc[:, -1].values
 ```
@@ -337,7 +338,6 @@ test_set = subset(dataset, split == FALSE)
 ```{python}
 from xgboost import XGBClassifier
 classifier = XGBClassifier()
-# classifier = XGBClassifier(use_label_encoder = False)
 classifier.fit(X_train, y_train)
 ```
 

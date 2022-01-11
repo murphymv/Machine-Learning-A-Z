@@ -1,16 +1,18 @@
 ---
 title: "Machine Learning A-Z"
-# author: "Mark V. Murphy"
-# author: "Kirill Eremenko, Hadelin de Ponteves""
-# date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
-documentclass: book
-url: https://murphymv.github.io/Machine-Learning-A-Z/
-cover-image: images/cover.jpg
+author: 
+  - Kirill Eremenko (Course Author)
+  - Hadelin de Ponteves (Course Author)
+  - Mark V. Murphy^[Not affiliated with the course or course authors.] (Site Author)
+date: "`r Sys.Date()`"
 description: |
   Learn to create Machine Learning Algorithms in Python and R from two Data 
   Science experts. Code templates included.
-github-repo: "murphymv/Machine-Learning-A-Z"
+cover-image: images/cover.jpg
+documentclass: book
+site: bookdown::bookdown_site
+url: https://murphymv.github.io/Machine-Learning-A-Z/
+github-repo: murphymv/Machine-Learning-A-Z
 ---
 
 ```{r setup, echo = FALSE, include = FALSE}
@@ -22,90 +24,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Course Outline {.unnumbered}
+# Introduction {.unnumbered}
 
-Interested in the field of Machine Learning? Then this course is for you!
+This site combines all code scripts from the Udemy course [Machine Learning A-Z™: Hands-On Python & R In Data Science](https://www.udemy.com/course/machinelearning/) into a series of pages for easy navigation. Pages are compiled from R Markdown notebooks, one for each section of the course (i.e. parts 1--10). Python and R code chunks (and their output) are included together under each section.
 
-This course has been designed by two professional Data Scientists so that we can share our knowledge and help you learn complex theory, algorithms, and coding libraries in a simple way.
-
-We will walk you step-by-step into the World of Machine Learning. With every tutorial, you will develop new skills and improve your understanding of this challenging yet lucrative sub-field of Data Science.
-
-This course is fun and exciting, but at the same time, we dive deep into Machine Learning. It is structured the following way:
-
--   Part 1 - Data Preprocessing
-
--   Part 2 - Regression: Simple Linear Regression, Multiple Linear Regression, Polynomial Regression, SVR, Decision Tree Regression, Random Forest Regression
-
--   Part 3 - Classification: Logistic Regression, K-NN, SVM, Kernel SVM, Naive Bayes, Decision Tree Classification, Random Forest Classification
-
--   Part 4 - Clustering: K-Means, Hierarchical Clustering
-
--   Part 5 - Association Rule Learning: Apriori, Eclat
-
--   Part 6 - Reinforcement Learning: Upper Confidence Bound, Thompson Sampling
-
--   Part 7 - Natural Language Processing: Bag-of-words model and algorithms for NLP
-
--   Part 8 - Deep Learning: Artificial Neural Networks, Convolutional Neural Networks
-
--   Part 9 - Dimensionality Reduction: PCA, LDA, Kernel PCA
-
--   Part 10 - Model Selection & Boosting: k-fold Cross Validation, Parameter Tuning, Grid Search, XGBoost
-
-Moreover, the course is packed with practical exercises that are based on real-life examples. So not only will you learn the theory, but you will also get some hands-on practice building your own models.
-
-And as a bonus, this course includes both Python and R code templates which you can download and use on your own projects.
-
-**Important updates (June 2020):**
-
--   CODES ALL UP TO DATE
-
--   DEEP LEARNING CODED IN TENSORFLOW 2.0
-
--   TOP GRADIENT BOOSTING MODELS INCLUDING XGBOOST AND EVEN CATBOOST!
-
-## What you'll learn: {.unnumbered}
-
--   Master Machine Learning on Python & R
-
--   Have a great intuition of many Machine Learning models
-
--   Make accurate predictions
-
--   Make powerful analysis
-
--   Make robust Machine Learning models
-
--   Create strong added value to your business
-
--   Use Machine Learning for personal purpose
-
--   Handle specific topics like Reinforcement Learning, NLP and Deep Learning
-
--   Handle advanced techniques like Dimensionality Reduction
-
--   Know which Machine Learning model to choose for each type of problem
-
--   Build an army of powerful Machine Learning models and know how to combine them to solve any problem
-
-## Are there any course requirements or prerequisites? {.unnumbered}
-
--   Just some high school mathematics level.
-
-## Who this course is for: {.unnumbered}
-
--   Anyone interested in Machine Learning.
-
--   Students who have at least high school knowledge in math and who want to start learning Machine Learning.
-
--   Any intermediate level people who know the basics of machine learning, including the classical algorithms like linear regression or logistic regression, but who want to learn more about it and explore all the different fields of Machine Learning.
-
--   Any people who are not that comfortable with coding but who are interested in Machine Learning and want to apply it easily on datasets.
-
--   Any students in college who want to start a career in Data Science.
-
--   Any data analysts who want to level up in Machine Learning.
-
--   Any people who are not satisfied with their job and who want to become a Data Scientist.
-
--   Any people who want to create added value to their business by using powerful Machine Learning tools.
+Course content by: [Kirill Eremenko](https://www.udemy.com/course/machinelearning/#instructor-1), [Hadelin de Ponteves](https://www.udemy.com/course/machinelearning/#instructor-2), [SuperDataScience Support](https://www.udemy.com/course/machinelearning/#instructor-3), [Ligency Team](https://www.udemy.com/course/machinelearning/#instructor-4)
