@@ -3,7 +3,7 @@ title: "Machine Learning A-Z"
 author: 
   - Kirill Eremenko (Course Author)
   - Hadelin de Ponteves (Course Author)
-  - Mark V. Murphy^[Not affiliated with the course or course authors.] (Site Author)
+  - Mark V. Murphy^[Not affiliated with course or course authors.] (Site Author)
 date: "`r Sys.Date()`"
 description: |
   Learn to create Machine Learning Algorithms in Python and R from two Data 
